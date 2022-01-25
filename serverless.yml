@@ -8,6 +8,7 @@ plugins:
 custom:
   serverless-offline:
     host: 0.0.0.0
+    noAuth: true
 provider:
   deploymentBucket:
     name: ${env:AWS_DEPLOYMENT_BUCKET_NAME}
