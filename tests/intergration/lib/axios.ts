@@ -14,3 +14,5 @@ export default axios.create({
   timeout: 30000000,
   headers: { Authorization: `Bearer ${testUseEncodedJWT}` },
 });
+
+export const testUserId = 'test_user_001';

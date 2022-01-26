@@ -1,16 +1,23 @@
-const genderEnum = ['male', 'female'];
+const gender = {
+  type: 'string',
+  enum: ['male', 'female', 'transgender'],
+};
 
-const userImage = {
+const image = {
   type: 'object',
   properties: {
     fileName: { type: 'string' },
+    fileExt: { type: 'string' },
     checked: { type: 'boolean' },
+    id: { type: 'string' },
+    isPhotoVerified: { type: 'boolean' },
+    photoReportedCount: { type: 'number' },
   },
-  required: ['fileName'],
+  required: ['fileName', 'fileExt'],
   additionalProperties: false,
 };
 
-const userEditable = {
+const profileEditable = {
   type: 'object',
   properties: {
     nickName: { type: 'string', minLength: 1 },
@@ -20,21 +27,14 @@ const userEditable = {
     location3rd: { type: 'string' },
     phone: { type: 'string' },
     hobbies: { type: 'array', items: { type: 'string' } },
-    gender: {
-      type: 'string',
-      enum: genderEnum,
-    },
+    gender,
     genderMatch: {
       type: 'array',
-      items: {
-        type: 'string',
-        enum: genderEnum,
-      },
+      items: gender,
     },
     preferAgeGTE: { type: 'integer' },
     preferAgeLTE: { type: 'integer' },
     selfIntro: { type: 'string' },
-    images: { type: 'array', items: userImage },
   },
   required: ['nickName', 'dob', 'gender'],
   additionalProperties: false,
@@ -52,32 +52,21 @@ const userSecret = {
   additionalProperties: false,
 };
 
-const userReadonly = {
+const profileReadonly = {
   type: 'object',
   properties: {
     userId: { type: 'string' },
     email: { type: 'string' },
     hobbies: { type: 'array', items: { type: 'string' } },
-    photos: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          photoId: { type: 'string' },
-          isPhotoVerified: { type: 'boolean' },
-          photoReportedCount: { type: 'number' },
-        },
-        additionalProperties: false,
-      },
-    },
+    images: { type: 'array', items: image },
   },
   additionalProperties: false,
 };
 
-// 被依賴的schema要放到前面才會被build
 module.exports = {
-  userImage,
-  userEditable,
+  gender,
+  image,
+  profileEditable,
   userSecret,
-  userReadonly,
+  profileReadonly,
 };

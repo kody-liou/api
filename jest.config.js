@@ -62,10 +62,10 @@ module.exports = {
 
   // A path to a module which exports an async function that is
   // triggered once before all test suites
-  globalSetup: './tests/intergration/global/global_setup.ts',
+  globalSetup: './tests/intergration/global/global-setup.ts',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: './tests/intergration/global/global_teardown.ts',
+  globalTeardown: './tests/intergration/global/global-teardown.ts',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
