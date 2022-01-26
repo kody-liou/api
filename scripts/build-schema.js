@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 const { compile } = require('json-schema-to-typescript');
 const fs = require('fs');
+const path = require('path');
 const user = require('../schema/user');
 
 const allSchema = {
@@ -17,14 +18,17 @@ DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file,
 and run json-schema-to-typescript to regenerate this file.
 */
 `;
-fs.rmSync('generated/types', { recursive: true, force: true });
+
+const rootDir = 'generated';
+const schemaTypesDir = path.resolve(rootDir, 'types');
+fs.rmSync(schemaTypesDir, { recursive: true, force: true });
 schemaKeys.forEach((schemaKey) => {
   const jsonSchema = allSchema[schemaKey];
   compile(jsonSchema, schemaKey, { bannerComment }).then((ts) => {
-    if (!fs.existsSync('generated')) fs.mkdirSync('generated');
-    if (!fs.existsSync('generated/types')) {
-      fs.mkdirSync('generated/types');
+    if (!fs.existsSync(rootDir)) fs.mkdirSync(rootDir);
+    if (!fs.existsSync(schemaTypesDir)) {
+      fs.mkdirSync(schemaTypesDir);
     }
-    fs.writeFileSync(`generated/types/${schemaKey}.ts`, ts);
+    fs.writeFileSync(path.resolve(schemaTypesDir, `${schemaKey}.ts`), ts);
   });
 });
