@@ -40,14 +40,18 @@ const profileEditable = {
   additionalProperties: false,
 };
 
-const userSecret = {
+const profileSecret = {
+  description: 'The data that need keep secret to client',
   type: 'object',
   properties: {
-    isEmailVerified: { type: 'boolean' },
-    isPhoneVerified: { type: 'boolean' },
-    createdAt: { type: 'number' },
-    creditRating: { type: 'number' },
-    userReportedCount: { type: 'number' },
+    score: {
+      description: 'The score higher, the sorting priority',
+      type: 'number',
+    },
+    reportedCount: {
+      description: 'The count that this profile reported by other users',
+      type: 'number',
+    },
   },
   additionalProperties: false,
 };
@@ -59,6 +63,7 @@ const profileReadonly = {
     email: { type: 'string' },
     hobbies: { type: 'array', items: { type: 'string' } },
     images: { type: 'array', items: image },
+    ts: { type: 'number' },
   },
   additionalProperties: false,
 };
@@ -67,6 +72,6 @@ module.exports = {
   gender,
   image,
   profileEditable,
-  userSecret,
+  profileSecret,
   profileReadonly,
 };
