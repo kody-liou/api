@@ -6,7 +6,7 @@ import * as authenticator from './authenticator';
 
 export type Event = APIGatewayProxyEvent &
   authenticator.AuthEvent & {
-    body: { [key: string]: unknown };
+    body: { [key: string]: any };
     pathParameters: { [name: string]: string | undefined };
   };
 
