@@ -1,5 +1,6 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config();
 import axios, { AxiosError } from 'axios';
 import { got } from 'got';
 import { options, testUserId } from './lib/constants';

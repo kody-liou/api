@@ -1,6 +1,7 @@
 // # sourceMappingURL=profile.js.map
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config();
 import middy from '@middy/core';
 import * as middlewares from '../middlewares';
 import { dataFilter } from '../services/profile';

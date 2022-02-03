@@ -1,8 +1,8 @@
 // eslint-disable-next-line
-const { compile } = require('json-schema-to-typescript');
-const fs = require('fs');
-const path = require('path');
-const user = require('../schemas/profile');
+import { compile } from 'json-schema-to-typescript';
+import fs from 'fs';
+import path from 'path';
+import user from '../schemas/profile.js';
 
 const allSchema = {
   ...user,

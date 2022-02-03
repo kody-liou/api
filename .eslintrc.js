@@ -21,6 +21,7 @@ const rules = {
     'error',
     {
       ts: 'never',
+      js: 'always',
     },
   ],
   'linebreak-style': 0,

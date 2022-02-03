@@ -17,7 +17,7 @@ const image = {
   additionalProperties: false,
 };
 
-const profileEditable = {
+export const profileEditable = {
   type: 'object',
   properties: {
     nickName: { type: 'string', minLength: 1 },
@@ -68,7 +68,7 @@ const profileReadonly = {
   additionalProperties: false,
 };
 
-module.exports = {
+export default {
   gender,
   image,
   profileEditable,
