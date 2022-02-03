@@ -2,7 +2,7 @@
 const { compile } = require('json-schema-to-typescript');
 const fs = require('fs');
 const path = require('path');
-const user = require('../schema/user');
+const user = require('../schemas/profile');
 
 const allSchema = {
   ...user,
