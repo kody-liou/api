@@ -6,7 +6,7 @@ import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
 import httpEventNormalizer from '@middy/http-event-normalizer';
 import type { APIGatewayEvent } from 'aws-lambda';
-import { firebaseAdmin } from '../helpers/gcp';
+import { firebaseAdmin } from '../helpers/gcp.js';
 
 const generatePolicy = (principalId: string, methodArn: string) => {
   const apiGatewayWildcard = `${methodArn.split('/', 2).join('/')}/*`;

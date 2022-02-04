@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 import middy from '@middy/core';
-import * as middlewares from '../middlewares';
-import { dataFilter } from '../services/profile';
+import * as middlewares from '../middlewares/index.js';
+import { dataFilter } from '../services/profile.js';
 
 export const profileCreate = middy(async (event: middlewares.Event) => {
   const editable = dataFilter(event.body);

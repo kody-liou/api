@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import createError from 'http-errors';
 import { ProfileEditable } from '../generated/types/profileEditable';
-import { profileEditable } from '../schemas/profile';
+import { profileEditable } from '../schemas/profile.js';
 
 const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
 

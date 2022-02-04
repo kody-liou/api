@@ -2,7 +2,7 @@ import httpErrorHandler from '@middy/http-error-handler';
 import httpEventNormalizer from '@middy/http-event-normalizer';
 import httpJsonBodyParser from '@middy/http-json-body-parser';
 import type { APIGatewayProxyEvent } from 'aws-lambda';
-import * as authenticator from './authenticator';
+import * as authenticator from './authenticator.js';
 
 export type Event = APIGatewayProxyEvent &
   authenticator.AuthEvent & {

@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 import axios from 'axios';
-import { testUseEncodedJWT } from './constants';
+import { testUseEncodedJWT } from './constants.js';
 /**
  *  "sub": "test_user_001",
     "name": "Test User 001",
