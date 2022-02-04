@@ -17,6 +17,10 @@ provider:
   region: ${env:REGION}
   httpApi:
     cors: true
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: authorizerFunc
   iam:
     role:
       statements:
@@ -36,32 +40,32 @@ functions:
       - httpApi:
           method: post
           path: /profiles
-          authorizer: authorizerFunc
+          authorizer: customAuthorizer
   profileGet:
     handler: controllers/profile.profileGet
     events:
       - httpApi:
           method: get
           path: /profiles/{profileId}
-          authorizer: authorizerFunc
+          authorizer: customAuthorizer
   profilesGet:
     handler: controllers/profile.profilesGet
     events:
       - httpApi:
           method: get
           path: /profiles
-          authorizer: authorizerFunc
+          authorizer: customAuthorizer
   profileUpdate:
     handler: controllers/profile.profileUpdate
     events:
       - httpApi:
           method: put
           path: /profiles/{profileId}
-          authorizer: authorizerFunc
+          authorizer: customAuthorizer
   profileRemove:
     handler: controllers/profile.profileRemove
     events:
       - httpApi:
           method: delete
           path: /profiles/{profileId}
-          authorizer: authorizerFunc
+          authorizer: customAuthorizer
