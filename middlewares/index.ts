@@ -3,6 +3,7 @@ import httpEventNormalizer from '@middy/http-event-normalizer';
 import httpJsonBodyParser from '@middy/http-json-body-parser';
 import type { APIGatewayProxyEvent } from 'aws-lambda';
 import * as authenticator from './authenticator';
+// import rs from './response-serializer';
 
 export type Event = APIGatewayProxyEvent &
   authenticator.AuthEvent & {
@@ -15,4 +16,5 @@ export default [
   authenticator.default(),
   httpErrorHandler(),
   httpEventNormalizer(),
+  // rs,
 ];

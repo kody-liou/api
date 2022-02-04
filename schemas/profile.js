@@ -20,7 +20,7 @@ const image = {
 const profileEditable = {
   type: 'object',
   properties: {
-    nickName: { type: 'string', minLength: 1 },
+    name: { type: 'string', minLength: 1 },
     dob: { type: 'string', minLength: 1 },
     location1st: { type: 'string' },
     location2nd: { type: 'string' },
@@ -36,7 +36,7 @@ const profileEditable = {
     preferAgeLTE: { type: 'integer' },
     selfIntro: { type: 'string' },
   },
-  required: ['nickName', 'dob', 'gender'],
+  required: ['name', 'dob', 'gender'],
   additionalProperties: false,
 };
 

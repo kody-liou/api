@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { testUseEncodedJWT } from './constants';
 /**
  *  "sub": "test_user_001",
@@ -8,8 +8,8 @@ import { testUseEncodedJWT } from './constants';
     "iat": 1516239022
  */
 
-export default axios.create({
+export const config: AxiosRequestConfig = {
   baseURL: process.env.API_BASE_URL,
   timeout: 30000000,
   headers: { Authorization: `Bearer ${testUseEncodedJWT}` },
-});
+};

@@ -2,21 +2,22 @@ require('dotenv').config();
 
 import axios, { AxiosError } from 'axios';
 import { testUserId } from './lib/constants';
-import axiosInstance from './lib/axios';
-import { ProfileClientItem, Gender } from '../../interfaces';
+import { config } from './lib/axios';
+import { ProfileEditable } from '../../generated/types/profileEditable';
 
-const clientProfileData: Readonly<ProfileClientItem> = {
+const validClientProfileData: Readonly<ProfileEditable> = {
   name: 'Liou Jia Hao',
-  age: 28,
-  gender: Gender.male,
-  isAgeDisplay: true,
-  prefereGender: Gender.femaie,
+  dob: '19930929',
+  gender: 'male',
 };
 
 describe('profileCreate', () => {
+  beforeEach(() => {
+    jest.setTimeout(10000);
+  });
   it('post empty data should return 400', async () => {
-    await axiosInstance
-      .post('profiles', {})
+    await axios
+      .post('profiles', {}, config)
       .catch((error: Error | AxiosError) => {
         expect(axios.isAxiosError(error)).toBe(true);
         if (axios.isAxiosError(error)) {
@@ -26,59 +27,74 @@ describe('profileCreate', () => {
   });
 
   it('post wrong gender should return 400', async () => {
-    const response = await axiosInstance.post('profiles', {
-      ...clientProfileData,
-      gender: 'apple',
-    });
-    expect(response.status).toBe(400);
+    await axios
+      .post(
+        'profiles',
+        {
+          ...validClientProfileData,
+          gender: 'apple',
+        },
+        config,
+      )
+      .catch((error: Error | AxiosError) => {
+        expect(axios.isAxiosError(error)).toBe(true);
+        if (axios.isAxiosError(error)) {
+          expect(error.response?.status).toBe(400);
+        }
+      });
   });
 
   it('post valid data should return 200', async () => {
-    const response = await axiosInstance.post('profiles', clientProfileData);
-    expect(response.status).toBe(200);
+    const res = await axios
+      .post('profiles', validClientProfileData, config)
+      .catch((err) => {
+        console.log(err);
+      });
+    expect(res?.data).not.toBe(undefined);
+    if (!res?.data) return;
+    expect(res.data.dob).toBe(validClientProfileData.dob);
+    expect(res.data.name).toBe(validClientProfileData.name);
+    expect(res.data.gender).toBe(validClientProfileData.gender);
   });
 });
 
 describe('profileGet', () => {
   it('should return Object', async () => {
-    const response = await axiosInstance.get(`profiles/${testUserId}`, {});
+    const response = await axios.get(`profiles/${testUserId}`, config);
     expect(response.data).toBeInstanceOf(Object);
   });
 });
 
 describe('profilesGet', () => {
   it('should return Array', async () => {
-    const response = await axiosInstance.get('profiles');
+    const response = await axios.get('profiles', config);
     expect(response.data).toBeInstanceOf(Array);
   });
 });
 
 describe('profileUpdate', () => {
-  it('edit gender should return 400 bad input', async () => {
-    const response = await axiosInstance.put(`profiles/${testUserId}`, {
-      gender: Gender.femaie,
-    });
-    expect(response.status).toBe(400);
-  });
-
-  it('edit gender should return 400 bad input', async () => {
-    const response = await axiosInstance.put(`profiles/${testUserId}`, {
-      gender: Gender.femaie,
-    });
-    expect(response.status).toBe(400);
+  it('edit gender should return updated data', async () => {
+    const response = await axios.put(
+      `profiles/${testUserId}`,
+      {
+        gender: 'female',
+      },
+      config,
+    );
+    expect(response.data.gender).toBe('female');
   });
 });
 
 describe('profileRemove', () => {
   it('delete success should return 200', async () => {
-    const response = await axiosInstance.delete(`profiles/${testUserId}`, {});
+    const response = await axios.delete(`profiles/${testUserId}`, config);
     expect(response.status).toBe(200);
   });
 });
 
-describe('profileGet', () => {
-  it('should return 404', async () => {
-    const response = await axiosInstance.get(`profiles/${testUserId}`, {});
-    expect(response.status).toBe(404);
-  });
-});
+// describe('profileGet', () => {
+//   it('should return 404', async () => {
+//     const response = await axiosInstance.get(`profiles/${testUserId}`, {});
+//     expect(response.status).toBe(404);
+//   });
+// });
