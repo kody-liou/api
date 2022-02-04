@@ -1,8 +1,7 @@
 service: social-app
 frameworkVersion: '2.69.1'
-
+useDotenv: true
 plugins:
-  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-offline
 custom:

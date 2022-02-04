@@ -92,9 +92,9 @@ describe('profileRemove', () => {
   });
 });
 
-// describe('profileGet', () => {
-//   it('should return 404', async () => {
-//     const response = await axiosInstance.get(`profiles/${testUserId}`, {});
-//     expect(response.status).toBe(404);
-//   });
-// });
+describe('profileGet', () => {
+  it('should return 404', async () => {
+    const response = await axios.get(`profiles/${testUserId}`, config);
+    expect(response.status).toBe(404);
+  });
+});
