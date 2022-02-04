@@ -1,5 +1,5 @@
 service: social-app
-frameworkVersion: '2.69.1'
+frameworkVersion: '3.1.1'
 useDotenv: true
 plugins:
   - serverless-plugin-typescript
@@ -15,7 +15,6 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: ${env:REGION}
-  lambdaHashingVersion: 20201221
   httpApi:
     cors: true
   iam:
