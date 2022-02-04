@@ -34,7 +34,6 @@ const rules = {
       trailingComma: 'all',
       printWidth: 80,
       bracketSpacing: true,
-      jsxBracketSameLine: true,
     },
     {
       usePrettierrc: false,

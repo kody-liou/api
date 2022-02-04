@@ -3,11 +3,13 @@ require('dotenv').config();
 
 import middy from '@middy/core';
 import * as middlewares from '../middlewares';
+import { dataFilter } from '../services/profile';
 
 export const profileCreate = middy(async (event: middlewares.Event) => {
+  const editable = dataFilter(event.body);
   return {
-    statusCode: 200,
-    body: '',
+    statusCode: 400,
+    body: editable,
   };
 }).use(middlewares.default);
 
