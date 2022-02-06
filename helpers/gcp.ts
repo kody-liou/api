@@ -1,3 +1,4 @@
+// # sourceMappingURL=gcp.js.map
 import * as admin from 'firebase-admin';
 
 export const firebaseAdmin = (): admin.app.App => {

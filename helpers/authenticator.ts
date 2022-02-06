@@ -1,3 +1,4 @@
+// # sourceMappingURL=authenticator.js.map
 import jwtDecode from 'jwt-decode';
 import type middy from '@middy/core';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
