@@ -1,11 +1,10 @@
-// # sourceMappingURL=authorizer.js.map
+// # sourceMappingURL=auth.js.map
 require('dotenv').config();
 
 import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
 import httpEventNormalizer from '@middy/http-event-normalizer';
 import type { APIGatewayEvent } from 'aws-lambda';
-import createError from 'http-errors';
 import { firebaseAdmin } from '../helpers/gcp';
 
 const generatePolicy = (principalId: string, methodArn: string) => {
@@ -34,31 +33,25 @@ export default middy(
     },
   ) => {
     if (!event.authorizationToken) {
-      throw new createError.Unauthorized();
+      throw new Error('Unauthorized');
     }
     const tokenParts = event.authorizationToken.split(' ');
     const tokenValue = tokenParts[1];
     if (!(tokenParts[0].toLowerCase() === 'bearer' && tokenValue)) {
-      throw new createError.Unauthorized();
+      throw new Error('Unauthorized');
     }
-    try {
-      const decodedToken = await firebaseAdmin()
-        .auth()
-        .verifyIdToken(tokenValue);
-      const { sub, email, email_verified: emailVerified } = decodedToken;
-      if (!sub || !email || !emailVerified) {
-        throw new createError.Unauthorized();
-      }
-      const policy = generatePolicy(sub, event.methodArn);
-      return {
-        ...policy,
-        context: {
-          sub,
-        },
-      };
-    } catch (error) {
-      throw new createError.Unauthorized();
+    const decodedToken = await firebaseAdmin().auth().verifyIdToken(tokenValue);
+    const { sub, email, email_verified: emailVerified } = decodedToken;
+    if (!sub || !email || !emailVerified) {
+      throw new Error('Unauthorized');
     }
+    const policy = generatePolicy(sub, event.methodArn);
+    return {
+      ...policy,
+      context: {
+        sub,
+      },
+    };
   },
 )
   .use(httpErrorHandler())
