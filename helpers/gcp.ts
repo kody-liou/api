@@ -1,18 +1,14 @@
 // # sourceMappingURL=gcp.js.map
 import * as admin from 'firebase-admin';
+import credential from '../firebase-admin-credential.json';
 
 export const firebaseAdmin = (): admin.app.App => {
   if (admin.apps.length) {
     // @ts-ignore
     return admin;
   }
-  const secretText = Buffer.from(
-    process.env.FIREBASE_CREDENTIALS!,
-    'base64',
-  ).toString('utf-8');
-  const secrets = JSON.parse(secretText);
   admin.initializeApp({
-    credential: admin.credential.cert(secrets),
+    credential: admin.credential.cert(credential as admin.ServiceAccount),
   });
   // @ts-ignore
   return admin;

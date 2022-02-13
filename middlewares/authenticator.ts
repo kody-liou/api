@@ -22,11 +22,22 @@ export default (): middy.MiddlewareObj<Event, APIGatewayProxyResult> => {
         const decodedToken = jwtDecode<{ sub: string }>(authText);
         sub = decodedToken.sub;
       } else {
-        sub = event.requestContext.authorizer?.sub;
+        sub = event.requestContext.authorizer?.lambda?.sub;
+        if (!sub) {
+          console.log(
+            'No sub, event.requestContext.authorizer?.lambda is:',
+            event.requestContext.authorizer?.lambda,
+          );
+          return { statusCode: 403, body: 'No sub' };
+        }
       }
       const userId = event.pathParameters?.userId || sub;
-      if (!userId) return { statusCode: 403, body: 'No userId' };
+      if (!userId) {
+        console.log('No userId, event is:', event);
+        return { statusCode: 403, body: 'No userId' };
+      }
       if (userId !== sub) {
+        console.log('userId no equal to sub, event is:', event);
         return { statusCode: 403, body: 'userId no equal to sub' };
       }
       event.authedUserId = userId;

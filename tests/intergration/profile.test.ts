@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-import axios, { AxiosError } from 'axios';
-import { testUserId } from './lib/constants';
-import { config } from './lib/axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { getAxiosConfig } from './helpers/get-axios-config'; // testUserId,
 import { ProfileEditable } from '../../generated/types/profileEditable';
+import { signIn, getIdToken, auth } from './helpers/firebase';
 
 const validClientProfileData: Readonly<ProfileEditable> = {
   name: 'Liou Jia Hao',
@@ -11,16 +11,24 @@ const validClientProfileData: Readonly<ProfileEditable> = {
   gender: 'male',
 };
 
+let config: AxiosRequestConfig;
+beforeEach(async () => {
+  jest.setTimeout(10000);
+  await signIn();
+  const token = await getIdToken();
+  expect(typeof token === 'string').toBe(true);
+  if (!token) return;
+  config = getAxiosConfig(token);
+});
+
 describe('profileCreate', () => {
-  beforeEach(() => {
-    jest.setTimeout(10000);
-  });
   it('post empty data should return 400', async () => {
     await axios
       .post('profiles', {}, config)
       .catch((error: Error | AxiosError) => {
         expect(axios.isAxiosError(error)).toBe(true);
         if (axios.isAxiosError(error)) {
+          console.log(error.message);
           expect(error.response?.status).toBe(400);
         }
       });
@@ -60,7 +68,12 @@ describe('profileCreate', () => {
 
 describe('profileGet', () => {
   it('should return Object', async () => {
-    const response = await axios.get(`profiles/${testUserId}`, config);
+    expect(auth.currentUser?.uid).not.toBe(undefined);
+    if (auth.currentUser?.uid === undefined) return;
+    const response = await axios.get(
+      `profiles/${auth.currentUser?.uid}`,
+      config,
+    );
     expect(response.data).toBeInstanceOf(Object);
   });
 });
@@ -74,8 +87,10 @@ describe('profilesGet', () => {
 
 describe('profileUpdate', () => {
   it('edit gender should return updated data', async () => {
+    expect(auth.currentUser?.uid).not.toBe(undefined);
+    if (auth.currentUser?.uid === undefined) return;
     const response = await axios.put(
-      `profiles/${testUserId}`,
+      `profiles/${auth.currentUser?.uid}`,
       {
         gender: 'female',
       },
@@ -87,14 +102,24 @@ describe('profileUpdate', () => {
 
 describe('profileRemove', () => {
   it('delete success should return 200', async () => {
-    const response = await axios.delete(`profiles/${testUserId}`, config);
+    expect(auth.currentUser?.uid).not.toBe(undefined);
+    if (auth.currentUser?.uid === undefined) return;
+    const response = await axios.delete(
+      `profiles/${auth.currentUser?.uid}`,
+      config,
+    );
     expect(response.status).toBe(200);
   });
 });
 
 describe('profileGet', () => {
   it('should return 404', async () => {
-    const response = await axios.get(`profiles/${testUserId}`, config);
+    expect(auth.currentUser?.uid).not.toBe(undefined);
+    if (auth.currentUser?.uid === undefined) return;
+    const response = await axios.get(
+      `profiles/${auth.currentUser?.uid}`,
+      config,
+    );
     expect(response.status).toBe(404);
   });
 });

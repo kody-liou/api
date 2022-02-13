@@ -28,24 +28,25 @@ const generatePolicy = (principalId: string, methodArn: string) => {
 export default middy(
   async (
     event: APIGatewayEvent & {
-      authorizationToken?: string;
-      methodArn: string;
+      routeArn: string;
     },
   ) => {
-    if (!event.authorizationToken) {
+    if (!event.headers.authorization) {
+      console.log('No authorization in headers, event is');
+      console.log(event);
       throw new Error('Unauthorized');
     }
-    const tokenParts = event.authorizationToken.split(' ');
+    const tokenParts = event.headers.authorization.split(' ');
     const tokenValue = tokenParts[1];
     if (!(tokenParts[0].toLowerCase() === 'bearer' && tokenValue)) {
       throw new Error('Unauthorized');
     }
     const decodedToken = await firebaseAdmin().auth().verifyIdToken(tokenValue);
-    const { sub, email, email_verified: emailVerified } = decodedToken;
-    if (!sub || !email || !emailVerified) {
+    const { sub, email } = decodedToken;
+    if (!sub || !email) {
       throw new Error('Unauthorized');
     }
-    const policy = generatePolicy(sub, event.methodArn);
+    const policy = generatePolicy(sub, event.routeArn);
     return {
       ...policy,
       context: {

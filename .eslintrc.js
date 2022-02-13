@@ -17,12 +17,7 @@ const rules = {
   ],
   'no-console': 'off',
   'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
-  'import/extensions': [
-    'error',
-    {
-      ts: 'never',
-    },
-  ],
+  'import/extensions': 'off',
   'linebreak-style': 0,
   'import/no-unresolved': 'error',
   'prettier/prettier': [
