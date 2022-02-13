@@ -9,7 +9,7 @@ export default async function globalSetup() {
   ) {
     console.log('global setup');
     await setupDevServer({
-      command: `kill-port 7070 && serverless offline SKIP_AUTH=true --httpPort=7070`,
+      command: 'npm run api:dev',
       launchTimeout: 50000,
       port: 7070,
     });
